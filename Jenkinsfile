@@ -47,7 +47,7 @@ pipeline{
               ],
               usePromotionTimestamp: false,
               useWorkspaceInPromotion: false,
-              verbose: true
+              verbose: false
             )
           ]
         )
@@ -61,13 +61,12 @@ pipeline{
           failOnError: true,
           publishers: [
             sshPublisherDesc(
-              configName: 'sinistre', 
+              configName: 'Node_Vanguard', 
               transfers: [
                 sshTransfer(
                   execCommand: """
                                   cd /opt/docker/lcom
                                   sudo docker compose up --build --detach > /dev/null
-
                                """,
                   execTimeout: 240000
                 )
