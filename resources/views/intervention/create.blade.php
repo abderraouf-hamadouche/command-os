@@ -141,7 +141,7 @@ $('#ajouter').click(function(){
                             //alert(document.getElementById("rechercher").value);
                             $val1=document.getElementById("NameProc").value;
                             $val2=document.getElementById("rechercher").value;
-                            $val2 = document.getElementById("rechercher").value.split('-');
+                            //$val2 = document.getElementById("rechercher").value;
                             var selectElement=document.getElementById("select");
                             var selectedIndex = selectElement.selectedIndex;
                             $val3 = selectElement.options[selectedIndex].value;
@@ -156,7 +156,7 @@ $('#ajouter').click(function(){
                             var newCell3 = document.createElement('td');
                             var newCell4 = document.createElement('td');
                             newCell1.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][order]  readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val4+'">';
-                            newCell2.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][command] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val2[0]+'">'+$val2[1];
+                            newCell2.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][command] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val2+'">'+$val2;
                             newCell3.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][param] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val3+'">'+$val33+'';
                             newCell4.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][desc]" class="form-control " class="form-control-plaintext" required style="border: none; outline: 0;">';
 
