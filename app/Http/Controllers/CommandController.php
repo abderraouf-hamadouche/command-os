@@ -97,7 +97,9 @@ class CommandController extends Controller
     {
         //store a new post
         $output= '<tr><td>Command Name</td> <td>Command Description</td></tr>';
-        $commands=command::where('command','LIKE','%'.$request->search.'%')->get();
+        $commands=command::where('command','LIKE','%'.$request->search.'%')
+                        ->orwhere('description','LIKE','%'.$request->search.'%')
+                        ->get();
         //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
         $commands=$commands->unique('command');
         foreach($commands as $commands)
