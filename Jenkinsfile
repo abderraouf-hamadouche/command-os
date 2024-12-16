@@ -1,7 +1,5 @@
 pipeline{
-  agent{
-    label "Agent_148"
-  }
+  agent any
 
   environment {
   GIT_CREDENTIALS_ID = 'be0ed972-97ca-4f0f-b31d-c2da6a198b15'
