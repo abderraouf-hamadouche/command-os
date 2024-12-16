@@ -117,6 +117,7 @@ class CommandController extends Controller
         $com=[];
         $commands=command::select("id","command")->where('command','LIKE','%'.$request->get('query').'%')->get();
         //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
+        $commands=$commands->unique('command');
 
          foreach($commands as $commands)
         {   
@@ -136,11 +137,11 @@ class CommandController extends Controller
         $commands=command::where('command','LIKE','%'.$request->get('query').'%')->get();
         //$lulu=$commands.id;
         //return response($commands[0]->id);
-        
-        $params=param::select("param","id")
+        $commands=$commands->unique('param');
+        //$params=param::select("param","id")
         //->where('param','LIKE','%'.$request->get('query').'%')
-        ->where('id-command', $commands[0]->id)
-        ->get();
+        //->where('id-command', $commands[0]->id)
+        //->get();
         //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
 
 
