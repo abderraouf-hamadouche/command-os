@@ -67,7 +67,6 @@ pipeline{
                   execCommand: """
                                   cd /opt/docker/lcom
                                   sudo docker compose up --build --detach > /dev/null
-
                                """,
                   execTimeout: 240000
                 )
