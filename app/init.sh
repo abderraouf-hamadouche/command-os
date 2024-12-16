@@ -33,3 +33,5 @@ php artisan key:generate
 php artisan optimize:clear
 
 echo "Permissions fixed and application setup completed."
+# Keep the container running
+tail -f /dev/null
