@@ -47,7 +47,7 @@ pipeline{
               ],
               usePromotionTimestamp: false,
               useWorkspaceInPromotion: false,
-              verbose: true
+              verbose: false
             )
           ]
         )
@@ -61,7 +61,7 @@ pipeline{
           failOnError: true,
           publishers: [
             sshPublisherDesc(
-              configName: 'sinistre', 
+              configName: 'Node_Vanguard', 
               transfers: [
                 sshTransfer(
                   execCommand: """
