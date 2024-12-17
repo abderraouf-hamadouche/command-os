@@ -10,5 +10,5 @@ class Command extends Model
 {
     use HasFactory;
     protected $table = 'commands_tables';
-    protected $fillable = ['command','description','param','pdescription'];
+    protected $fillable = ['command','description','tags', 'param','pdescription'];
 }

@@ -8,7 +8,7 @@
                 <p>{!! $command->description !!}</p>
                 <h1 class="display-one">Liste des parametres : </h1>
                 @foreach ($params as $param)
-                <p>{!! $param->param !!}   :   {!! $param->pdescription !!}</p> 
+                <p>{!! $param->param !!}   :   {!! $param->pdescription !!}   :   {!! $param->tags !!}</p> 
                 @endforeach
                 <hr>
                 <a href="/command/{{ $command->id }}/edit" class="btn btn-outline-primary">Edit Post</a>

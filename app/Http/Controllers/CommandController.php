@@ -53,9 +53,11 @@ class CommandController extends Controller
                 }
             } else {
                 // Case 1: Create a new row with user-provided data
+                $tagsArray = explode(' ', $request->tags);
                 $newCommand = Command::create([
                     'command' => $request->command,
                     'description' => $request->cdescription,
+                    'tags' =>  json_encode($tagsArray),
                     'param' => $request->param,
                     'pdescription' => $request->pdescription,
                 ]);

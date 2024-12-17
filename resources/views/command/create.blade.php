@@ -35,6 +35,11 @@
                                 <textarea id="cdescription" class="form-control" name="cdescription" placeholder="Enter Post Body"
                                           rows="" ></textarea>
                             </div>
+                            <div class="control-group col-12" id="tags2">
+                                <label for="tags">Tags</label>
+                                <input type="text" id="tags" class="form-control" name="tags"
+                                       placeholder="Enter Commande Tags" required>
+                            </div>
                             <div class="control-group col-12" >
                                 <label for="param">Param</label>
                                 <input type="text" id="param" class="form-control" name="param"
@@ -64,36 +69,40 @@
         
 var path = "{{ url('searchcommand') }}";
 var x = document.getElementById("description2");
+var y = document.getElementById("tags2");
 
-$('#search').typeahead({
-    source: function(query, process) {
-        
-        return $.ajax({
-            url: path,  // Spécifiez votre URL ici
-            method: 'GET',  // Ou 'POST' selon votre API
-            dataType: 'json',  // Indique au serveur que vous attendez des données JSON
-            data: {query: query},
-            success: function(data) {
+$(document).ready(function() {
+        $('#search').typeahead({
+            source: function(query, process) {
+                return $.ajax({
+                    url: path, // Replace 'path' with your API URL
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { query: query },
+                    success: function(data) {
+                        process(data); // Populate the suggestions
 
-                    process(data);
-                    
-                    //alert(data.length);
-                    //if (data.count >0) 
-                    if (data.length > 0)  {
-                             x.style.display = "none";
-                            } else {
-                             x.style.display = "block";
-                            }
-            },
-            
-            error: function(err) {
-                console.error('Erreur AJAX', err);
+                        // Check if there are matching results
+                        if (data.length > 0) {
+                            // Hide description and tags fields
+                            $('#description2').hide();
+                            $('#tags2').hide();
+                        } else {
+                            // Show description and tags fields
+                            $('#description2').show();
+                            $('#tags2').show();
+                        }
+                    },
+                    error: function(err) {
+                        console.error('AJAX Error:', err);
+                    }
+                });
             }
         });
-    }
-   
-});
-$
+    });$
+
+
+
           /*   $('#search').on('keyup',function()
           {
             $value=$(this).val();
