@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Print the user and group the script is running as
-# echo "Running as user: $(whoami) (UID: $(id -u))"
-# echo "Running with group: $(id -gn)"
+echo "Running as user: $(whoami) (UID: $(id -u))"
+echo "Running with group: $(id -gn)"
 
 # Ensure the script is run as root (ID 0 is root)
 if [ "$(id -u)" -ne "0" ]; then
