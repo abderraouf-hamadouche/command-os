@@ -41,7 +41,7 @@ COPY init.sh /init.sh
 RUN chmod +x /init.sh
 
 # Set the entrypoint to run the init.sh with sudo
-ENTRYPOINT ["sudo", "/init.sh"]
+# ENTRYPOINT ["sudo", "/init.sh"]
 
 # Switch back to non-root user if needed
 USER $user
