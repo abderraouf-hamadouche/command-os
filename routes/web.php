@@ -21,6 +21,8 @@ Route::get('/', function () {
 // The route we have created to show all blog posts.
 Route::get('/command', [\App\Http\Controllers\CommandController::class, 'index']);
 Route::get('/command/{command}', [\App\Http\Controllers\CommandController::class, 'show']);
+Route::get('/command/{command}/edit', [\App\Http\Controllers\CommandController::class, 'edit']);
+
 
 Route::get('/command/create/{command}', [\App\Http\Controllers\CommandController::class, 'create']);
 Route::post('/command/create/{command}',          [\App\Http\Controllers\CommandController::class, 'store']);

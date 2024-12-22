@@ -26,24 +26,29 @@
                             <div class="control-group col-12">
                                 <label for="command">Command Name</label>
 
-                                <input class="typeahead form-control" id="search" name="command" type="text">
+                                <input class="typeahead form-control" id="search" name="command" type="text" value="{!! $command->description !!} ">
                                 
                                        
                             </div>
                             <div class="control-group col-12 mt-2" id="description2">
                                 <label for="description" >Command Description</label>
-                                <textarea id="cdescription" class="form-control" name="cdescription" placeholder="Enter Post Body"
-                                          rows="" ></textarea>
+                                <textarea id="cdescription" class="form-control" name="cdescription" 
+                                          rows="" >{!! $command->description !!}</textarea>
+                            </div>
+                            <div class="control-group col-12" id="tags2">
+                                <label for="tags">Tags</label>
+                                <input type="text" id="tags" class="form-control" name="tags"
+                                       value="{{ is_array($command->tags) ? implode(' ', $command->tags) : $command->tags }}" required>
                             </div>
                             <div class="control-group col-12" >
                                 <label for="param">Param</label>
-                                <input type="text" id="param" class="form-control" name="param"
+                                <input type="text" id="param" class="form-control" name="param"    value="{!! $command->param !!}"
                                        placeholder="Enter Param command" required>
                             </div>
                             <div class="control-group col-12 mt-2"  >
-                                <label for="description">Commnd Parama Description</label>
-                                <textarea id="pdescription" class="form-control" name="pdescription" placeholder="Enter Post Body"
-                                          rows="" required></textarea>
+                                <label for="description">Commande Paramatre Description</label>
+                                <textarea id="pdescription" class="form-control" name="pdescription" 
+                                          rows="" required>{!! $command->pdescription !!}</textarea>
                             </div>
 
                         </div>

@@ -81,6 +81,9 @@ class CommandController extends Controller
     public function edit(Command $command)
     {
         //show form to edit the post
+        return view('command.edit', [
+            'command' => $command,
+        ]);
     }
 
     

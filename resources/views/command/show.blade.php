@@ -11,7 +11,7 @@
                 <p>{!! $param->param !!}   :   {!! $param->pdescription !!}   :   {!! $param->tags !!}</p> 
                 @endforeach
                 <hr>
-                <a href="/command/{{ $command->id }}/edit" class="btn btn-outline-primary">Edit Post</a>
+                <a href="./{{ $command->id }}/edit" class="btn btn-outline-primary">Edit Post</a>
                 <br><br>
                 <form id="delete-frm" class="" action="" method="POST">
                     @method('DELETE')
