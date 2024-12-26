@@ -13,8 +13,12 @@ class CommandController extends Controller
     {
         // show all blog posts
         $commands = Command::all();
+        $distinctTags = Command::pluck('tags')->flatten(1)->unique()->values();
+
+        //$distinctTags = explode(' ', $distinctTags);
+
         return view('command.index',[
-                'command' =>$commands,
+                'command' =>$commands, 'tags' => $distinctTags,
         ]) ;
     }
 

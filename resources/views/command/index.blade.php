@@ -12,8 +12,9 @@
                         <p>Create new Command</p>
                         <a href="./command/create/command" class="btn btn-primary btn-sm">Add Command</a>
                     </div>
-                </div>            
-                <table>    
+
+                       
+                <table class="col-8">    
                 <tr>        <td width="120px">Commande</td>  <td width="180px">Parametre</td>   <td>Description</td>
     </tr>
                 @forelse($command->sortByDesc('id') as $command)
@@ -26,6 +27,15 @@
                     <p class="text-warning">No blog Posts available</p>
                 @endforelse
                 </table>
+                <div class="col-4">
+                        <p>Liste des tags</p>
+                        @forelse($tags as $tag) 
+                        <a href="./command/create/command" >{{ $tag }}</a>
+                        @empty
+                             <p class="text-warning">No Tags available</p>
+                        @endforelse
+                    </div>
+                </div>     
             </div>
         </div>
     </div>
