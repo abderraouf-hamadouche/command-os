@@ -4,14 +4,16 @@
         <div class="row">
             <div class="col-12 pt-2">
                 <a href="../command" class="btn btn-outline-primary btn-sm">Go back</a>
-                <h1 class="display-one">La Commande est : {{ ucfirst($command->command) }}</h1>
-                <p>{!! $command->description !!}</p>
+                <h1 class="display-one">La Commande est : {{ ucfirst($command->first()->command) }}</h1>
+                <p>{!! $command->first()->description !!}</p>
+                <h3 class="display-one"> Référencé dans    :</h3>
+                <p> {!! implode(' ', $command->first()->tags) !!}</p>
                 <h1 class="display-one">Liste des parametres : </h1>
-                @foreach ($params as $param)
-                <p>{!! $param->param !!}   :   {!! $param->pdescription !!}   :   {!! $param->tags !!}</p> 
+                @foreach ($command as $command)
+                <p>{!! $command->param !!}   :   {!! $command->pdescription !!}   </p> 
                 @endforeach
                 <hr>
-                <a href="./{{ $command->id }}/edit" class="btn btn-outline-primary">Edit Post</a>
+                <a href=".//edit" class="btn btn-outline-primary">Edit Post</a>
                 <br><br>
                 <form id="delete-frm" class="" action="" method="POST">
                     @method('DELETE')

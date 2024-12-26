@@ -22,6 +22,15 @@ class CommandController extends Controller
         ]) ;
     }
 
+    public function tag($tag)
+    {
+        // show all blog posts
+    // Rechercher les commandes qui contiennent le tag
+    $commands = Command::whereJsonContains('tags', $tag)->get();
+    $commands = $commands->unique('command');
+    // Retourner une vue avec les résultats
+    return view('command.byTag', compact('commands', 'tag'));
+    }
     public function create()
     {
         //show form to create a blog post
@@ -76,7 +85,7 @@ class CommandController extends Controller
         $command_array=command::where('command',$command->command)->get();
         //$param=Param::where('id-command',$command->id)->get();
         return view('command.show', [
-            'command' => $command,'params'=>$command_array,
+            'command' => $command_array,
         ]);
        // return $command;
     }

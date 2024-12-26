@@ -30,7 +30,7 @@
                 <div class="col-4">
                         <p>Liste des tags</p>
                         @forelse($tags as $tag) 
-                        <a href="./command/create/command" >{{ $tag }}</a>
+                        <a href="./command/tag/{{ $tag }}" >{{ $tag }}</a>
                         @empty
                              <p class="text-warning">No Tags available</p>
                         @endforelse
