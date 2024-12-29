@@ -70,7 +70,8 @@ class CommandController extends Controller
                 $newCommand = Command::create([
                     'command' => $request->command,
                     'description' => $request->cdescription,
-                    'tags' =>  json_encode($tagsArray),
+                    //'tags' =>  json_encode($tagsArray),
+                    'tags' =>  $tagsArray,
                     'param' => $request->param,
                     'pdescription' => $request->pdescription,
                 ]);
