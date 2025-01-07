@@ -40,6 +40,8 @@ Route::get('/intervention/{intervention}', [\App\Http\Controllers\InterventionsC
 Route::get('/intervention/create/{intervention}', [\App\Http\Controllers\InterventionsController::class, 'create']);
 Route::post('/intervention/create/{intervention}', [\App\Http\Controllers\InterventionsController::class, 'store']);
 
+Route::get('searchint', [\App\Http\Controllers\InterventionsController::class, 'search']);
+
 
 Route::get('searchparam', [\App\Http\Controllers\CommandController::class, 'searchparam']);
 

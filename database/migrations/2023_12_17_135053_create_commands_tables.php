@@ -14,10 +14,12 @@ class CreateCommandsTables extends Migration
     public function up()
     {
         Schema::create('commands_tables', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('command');
-            $table->text('param');
             $table->text('description');
+            $table->json('tags')->nullable();
+            $table->text('param');
+            $table->text('pdescription');
             $table->timestamps();
         });
     }

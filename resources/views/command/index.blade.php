@@ -15,16 +15,16 @@
 
                        
                 <table class="col-8">    
-                <tr>        <td width="120px">Commande</td>  <td width="180px">Parametre</td>   <td>Description</td>
+                <tr>        <td width="120px">Commande</td>  <td width="180px">Parametre</td>   <td>Tags</td> <td>Description</td>
     </tr>
                 @forelse($command->sortByDesc('id') as $command)
                 <tr>
         <td width="120px"><a href="./command/{{ $command->id }}">{{ ucfirst($command->command) }}</a></td> 
-        <td width="180px">{{ $command->param }}</td>
+        <td width="180px">{{ $command->param }}</td> <td >{!! implode(' ', is_array($command->tags) ? $command->tags : [$command->tags]) !!}</td>
         <td>{{ ucfirst($command->pdescription) }}</td>
     </tr>
                 @empty
-                    <p class="text-warning">No blog Posts available</p>
+                    <p class="text-warning">No Commands Posts available</p>
                 @endforelse
                 </table>
                 <div class="col-4">

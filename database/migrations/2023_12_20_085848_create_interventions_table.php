@@ -14,15 +14,12 @@ class CreateInterventionsTable extends Migration
     public function up()
     {
         Schema::create('interventions', function (Blueprint $table) {
-            $table->id();
-            $table->text('intervention-name');
+            $table->bigIncrements('id');
+            $table->text('intervention');
             $table->text('description');
-            $table->integer('id-param');
-            $table->integer('ordre-seq');
+            $table->text('tags');
+            $table->text('created_by');
             $table->timestamps();
-            $table->foreign('id-param')
-                  ->references('id')
-                  ->on('params');
         });
     }
     

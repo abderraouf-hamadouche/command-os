@@ -4,13 +4,17 @@
         <div class="row">
             <div class="col-12 pt-2">
                 <a href="../intervention" class="btn btn-outline-primary btn-sm">Go back</a>
-                <h1 class="display-one">La Procésure est : {{ ucfirst($intervention->intervention_name) }}</h1>
-                <p>{!! $intervention->id !!}</p>
-                <h1 class="display-one">Liste des Commandes : </h1>
+                <h1 class="display-one">{{ ucfirst($intervention->intervention) }} :</h1>
+                <h2>Introduction</h2>
+                <p> {!! $intervention->description !!}</p>
+                <h1 class="display-one">Etapes à suivre : </h1>
                 
-                <p>{!! $intervention->intervention_name !!}   :   {!! $intervention->description !!}</p> 
+                @foreach ($intervention->processSteps as $step)
+                <h4>Etape {!! $step->step_order !!}   :    </h4> 
+                <p>  {!! $step->command->command !!}  </p>
+                <p>  {!! $step->comment !!}  </p>
+                @endforeach
                 
-               
                 
 
                 <hr>

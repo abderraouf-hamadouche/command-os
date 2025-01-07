@@ -38,7 +38,7 @@
                             <div class="control-group col-12" id="tags2">
                                 <label for="tags">Tags</label>
                                 <input type="text" id="tags" class="form-control" name="tags"
-                                       placeholder="Enter Commande Tags" required>
+                                       placeholder="Enter Commande Tags" >
                             </div>
                             <div class="control-group col-12" >
                                 <label for="param">Param</label>

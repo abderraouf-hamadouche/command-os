@@ -9,8 +9,13 @@ class Intervention extends Model
 {
     use HasFactory;
     protected $fillable = ["id","intervention","description","tags","created_by","created_at","updated_at"];
-    public function param()
+    /*public function param()
     {
         return $this->hasOne(Param::class, 'intervention_id', 'id_param');
+    }*/
+
+    public function processSteps()
+    {
+        return $this->hasMany(ProcessStep::class, 'process_id');
     }
 }

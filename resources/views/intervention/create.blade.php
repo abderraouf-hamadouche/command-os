@@ -20,6 +20,7 @@
 <form id="procedureForm" action="" method="post">
 @csrf
 <div class="container"style="width: 70%" >
+<a href="../../intervention" class="btn btn-outline-primary btn-sm">Go back</a>
 <h3 class="text-muted">Procedure creation Form</h3>
           <div class="header clearfix"></div>
                  <div class="form-group" style="">
@@ -55,14 +56,14 @@
                <thead><tr><th>#</th><th>Nom de la Commande</th><th>Parametre de la Commande</th><th>Description de la tache</th></tr></thead>
                <tbody id="tintervention">			
                <tr id="first-tf">
-                      <th><input type="text" name="inputs[0][order]"    readonly class="form-control-plaintext" style=" border:none;outline: 0;" value="0"></th>
-                      <th><input type="text" name="inputs[0][command]"  readonly class="form-control" style=" outline: 0;"></th>
-                      <th><input type="text" name="inputs[0][param]"     readonly class="form-control" style=" outline: 0;"></th>
-                      <th><input type="text" name="inputs[0][desc]"      readonly class="form-control" style=" outline: 0;"></th>
+                      <th><input type="text" name="inputs[0][order]"    readonly class="form-control-plaintext" style=" border:none;outline: 0;" value="0"required></th>
+                      <th><input type="text" name="inputs[0][command]"  readonly class="form-control" style=" outline: 0;"required></th>
+                      <th><input type="text" name="inputs[0][param]"     readonly class="form-control" style=" outline: 0;"required></th>
+                      <th><input type="text" name="inputs[0][desc]"      readonly class="form-control" style=" outline: 0;"required></th>
                </tr>   
 
                </table>
-               <input type="hidden" id="variableCount" name="variableCount" value="0">
+               <input type="hidden" id="variableCount" name="variableCount" value="0" required>
                <button type="submit" class="btn btn-primary" id="adproc">Create Procedure</button>
 
 </form>
@@ -155,10 +156,10 @@ $('#ajouter').click(function(){
                             var newCell2 = document.createElement('td');
                             var newCell3 = document.createElement('td');
                             var newCell4 = document.createElement('td');
-                            newCell1.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][order]  readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val4+'">';
-                            newCell2.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][command] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val2+'">'+$val2;
-                            newCell3.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][param] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val3+'">'+$val33+'';
-                            newCell4.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][desc]" class="form-control " class="form-control-plaintext" required style="border: none; outline: 0;">';
+                            newCell1.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][order]  readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val4+'" required>';
+                            newCell2.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][command] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val2+'" required>'+$val2;
+                            newCell3.innerHTML = '<input type="hidden" name=inputs['+$variableCount+'][param] readonly class="form-control-plaintext" style="border: none; outline: 0;" value="'+$val33+'"required>'+$val33+'';
+                            newCell4.innerHTML = '<input type="text"   name=inputs['+$variableCount+'][desc]" class="form-control " class="form-control-plaintext" required style="border: none; outline: 0;"required>';
 
                             newRow.appendChild(newCell1);
                             newRow.appendChild(newCell2);

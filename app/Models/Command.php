@@ -14,4 +14,10 @@ class Command extends Model
     protected $casts = [
         'tags' => 'array', // Automatically casts to an array
     ];
+
+
+    public function processSteps()
+    {
+        return $this->hasMany(ProcessStep::class, 'command_id');
+    }
 }

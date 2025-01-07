@@ -10,7 +10,7 @@
                 <p> {!! implode(' ', $command->first()->tags) !!}</p>
                 <h1 class="display-one">Liste des parametres : </h1>
                 @foreach ($command as $command)
-                <p>{!! $command->param !!}   :   {!! $command->pdescription !!}   </p> 
+                <p>{!! e($command->param) !!}   :   {!! e($command->pdescription) !!}   </p> 
                 @endforeach
                 <hr>
                 <a href=".//edit" class="btn btn-outline-primary">Edit Post</a>
