@@ -7,7 +7,7 @@
                 <h1 class="display-one">La Commande est : {{ ucfirst($command->first()->command) }}</h1>
                 <p>{!! $command->first()->description !!}</p>
                 <h3 class="display-one"> Référencé dans    :</h3>
-                <p> {!! implode(' ', $command->first()->tags) !!}</p>
+                <p> {!! implode(' ', is_array($command->first()->tags) ? $command->first()->tags : [$command->first()->tags]) !!}</p>
                 <h1 class="display-one">Liste des parametres : </h1>
                 @foreach ($command as $command)
                 <p>{!! e($command->param) !!}   :   {!! e($command->pdescription) !!}   </p> 
