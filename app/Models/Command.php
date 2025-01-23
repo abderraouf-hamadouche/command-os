@@ -20,4 +20,8 @@ class Command extends Model
     {
         return $this->hasMany(ProcessStep::class, 'command_id');
     }
+    public function argumentPositions()
+    {
+    return $this->hasMany(ArgumentPosition::class)->orderBy('position');
+    }
 }

@@ -15,8 +15,8 @@
             <div class="col-12 pt-2">
                 <a href="../" class="btn btn-outline-primary btn-sm">Go back</a>
                 <div class="border rounded mt-5 pl-4 pr-4 pt-4 pb-4">
-                    <h1 class="display-4">Add a New Command</h1>
-                    <p>Fill and submit this form to create a Command</p>
+                    <h1 class="display-4">Edit Command</h1>
+                    <p>Fill and submit this form to edit a Command</p>
 
                     <hr>
 
@@ -26,7 +26,7 @@
                             <div class="control-group col-12">
                                 <label for="command">Command Name</label>
 
-                                <input class="typeahead form-control" id="search" name="command" type="text" value="{!! $command->description !!} ">
+                                <input class="typeahead form-control" id="search" name="command" type="text" value="{!! $command->command !!} ">
                                 
                                        
                             </div>
@@ -55,7 +55,7 @@
                         <div class="row mt-2">
                             <div class="control-group col-12 text-center">
                                 <button id="btn-submit" class="btn btn-primary">
-                                    ADD Command
+                                    Save Change 
                                 </button>
                             </div>
                         </div>

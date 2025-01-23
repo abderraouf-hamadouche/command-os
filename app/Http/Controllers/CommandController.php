@@ -83,7 +83,11 @@ class CommandController extends Controller
     public function show(Command $command)
     {
         //show a blog post
-        $command_array=command::where('command',$command->command)->get();
+        $command_array=command::where('command',$command->command)
+                                ->with('argumentPositions.argument')
+                                ->get();
+        //$command = Command::with('argumentPositions.argument')->find($id); // Trouve une commande spécifique
+
         //$param=Param::where('id-command',$command->id)->get();
         return view('command.show', [
             'command' => $command_array,
@@ -95,6 +99,8 @@ class CommandController extends Controller
     public function edit(Command $command)
     {
         //show form to edit the post
+
+
         return view('command.edit', [
             'command' => $command,
         ]);
@@ -104,6 +110,41 @@ class CommandController extends Controller
     public function update(Request $request, Command $command)
     {
         //save the edited post
+        try {
+            // Validate the request
+            /*$validator = Validator::make($request->all(), [
+                'cdescription' => 'required|string',
+                'tags' => 'required|string',
+                'param' => 'required|string',
+                'pdescription' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                               ->withErrors($validator)
+                               ->withInput();
+            }
+*/
+            // Convert tags string to array if needed
+            $tags = explode(' ', $request->tags);
+            $tags = array_filter($tags); // Remove empty values
+
+            // Update the command
+            $command->update([
+                'description' => $request->cdescription,
+                'tags' => $tags,
+                'param' => $request->param,
+                'pdescription' => $request->pdescription,
+            ]);
+
+            return redirect()->route('commands.index')
+                           ->with('success', 'Command updated successfully');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->with('error', 'Error updating command: ' . $e->getMessage())
+                           ->withInput();
+        }
     }
 
     
