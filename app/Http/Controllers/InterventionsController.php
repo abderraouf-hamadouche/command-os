@@ -3,167 +3,69 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Command;
-use App\Models\Param;
 use App\Models\Intervention;
-use App\Models\ProcessStep;
-use Illuminate\Support\Facades\Log;
+use App\Models\Command;
 
 class InterventionsController extends Controller
 {
     //
 
-     public  function index()
-    {
-        // show all proc
-        $interventions = Intervention::all();
-        return view('intervention.index' , [
-            'interventions' => $interventions, 
-         ]);
-    }
 
+    public function index()
+    {
+        $interventions = Intervention::latest()->paginate(10);
+        return view('intervention.index', compact('interventions'));
+    }
+    public function store(Request  $request)
+    {
+
+        $validated = $request->validate([
+            'titre' => 'required|string|max:150',
+            'probleme' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+               $maxPosition = $intervention->etapes()->max('position');
+
+        $intervention = Intervention::create($validated);
+        return redirect()->route('intervention.show', $intervention)->with('success', 'Intervention created successfully! Now, let\'s add the first step.');
+    }
     public function create()
     {
         //show form to create a blog post
         return view('intervention.create');
     }
     public function show(Intervention $intervention)
-    {
-        //show form to create a blog post
-        //$intervention=intervention::where('id',$interv->id)->get();
-
-         /*$procedure=intervention::where('id',$intervention->id)
-                                  ->first();
-         //$steps=ProcessStep::all();
-         $steps=ProcessStep::where('process_id',$procedure->id)
-                                  ->get();
-*/
-        $int = Intervention::with(['processSteps.command'])
-        ->where('id', $intervention->id)
-        ->first();
-        //$param=Param::where('id-command',$command->id)->get();
-        Log::info("Intervention :$int"); 
-        //Log::info("steps$steps");
-        return view('intervention.show', [
-            //'intervention' => $intervention,'steps' => $steps,
-            'intervention' => $int,
-
-        ]);
-       // return $command;
+    {   
+        $intervention->load('etapes.command', 'etapes.parametre', 'etapes.nextStepOk', 'etapes.nextStepKo');
+        $commands = Command::with('parametres')->orderBy('name')->get();
+        return view('intervention.show', compact('intervention','commands'));
+       // return $Interventioninter;
     
 
     }
-
-    public function store(Request $request)
-    {   
-              
-        $inputs = $request->input('inputs');
-               $interv = Intervention::create([
-                'intervention' => $inputs[0]['command'],
-                'description' => $inputs[0]['desc'],
-                'tags' => "lulu",
-                'created_by' => "lulu",
-
-                                              ]);
-
-        for ($x = 1; $x <= $request->variableCount; $x++) {
-          /*  $interv2 = Intervention::create([
-                'id'  => $interv->id,
-                'intervention_name' =>$interv->id,
-                'description' => $inputs[$x]['desc'],
-                'id_command' => $inputs[$x]['command'],
-                'id_param' => $inputs[$x]['param'],
-                'ordre_seq' => $inputs[$x]['order']     ]);*/
-
-                // lulu its in the game
-
-
-                $command = Command::where('command', $inputs[$x]['command'])
-                  ->where('param', $inputs[$x]['param']) // Corrected to match 'param'
-                  ->first(['id']); // Use `first` to get a single record
-
-                if ($command) {
-                    $command_id = $command->id;
-
-                $in=ProcessStep::create([
-                'process_id' =>$interv->id,
-                'command_id' => $command_id,
-                'step_order' => $inputs[$x]['order'],
-                'comment' => $inputs[$x]['desc'],
-
-
-                ]);
-            } else {
-                // Handle the case where no matching command is found
-                throw new Exception("Command not found for given inputs");
-            }
-
-
-
-
-
-        }
-           
-
-        //show form to create a blog post
+    public function edit(Intervention $intervention)
+    {
+        // To be implemented later
+        $intervention->load('etapes.command', 'etapes.parametre', 'etapes.nextStepOk', 'etapes.nextStepKo');
+        $commands = Command::with('parametres')->orderBy('name')->get();
+         return view('intervention.edit', compact('intervention','commands'));
         
-
-                                      //  }                                 
-
-
-         return redirect('intervention/' . $interv->id);
-
-
-
-
     }
-
-    public function delete()
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Intervention $intervention)
     {
-        //show form to create a blog post
-
+        // To be implemented later
     }
-
-    public function edit()
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Intervention $intervention)
     {
-        //show form to create a blog post
-
+        // To be implemented later
+        // $intervention->delete();
+        // return redirect()->route('intervention.index')->with('success', 'Intervention deleted.');
     }
-
-    public function search2()
-    {
-        //show form to create a blog post
-
-    }
-
-
-    public function search(Request $request)
-    {
-        //store a new post
-        $output= '<tr><td>Command Name</td> <td>Command Description</td></tr>';
-        $output2='';
-        $commands=Intervention::where('intervention','LIKE','%'.$request->search.'%')
-                        ->orwhere('description','LIKE','%'.$request->search.'%')
-                        ->get();
-        //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
-        //$commands=$commands->unique('command');
-        foreach($commands as $commands)
-        {$output.=
-            '<tr>
-            <td><a href="command/'.$commands->id.'"> '.$commands->command.' </td> <td> '.$commands->description.' </td>
-             </tr>';
-            $output2.=
-             '<ul>
-             <li><h5><a href="./intervention/ '.$commands->id.' ">'. $commands->intervention.'</a> <h6> '.$commands->description.'</h6> </li>
-             
-             </ul>';
-
-             //<li><a href="./intervention/ '.$commands->id.' "> <h6> '.$commands->description.'</h6> </a></li>
-        }
-        
-        return response($output2);
-    }
-
-
 
 }

@@ -5,23 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Command extends Model
 {
     use HasFactory;
-    protected $table = 'commands_tables';
-    protected $fillable = ['command','description','tags', 'param','pdescription'];
-    protected $casts = [
-        'tags' => 'array', // Automatically casts to an array
-    ];
 
+    protected $fillable = ['name', 'description'];
 
-    public function processSteps()
+    /**
+     * The tags that belong to the command.
+     */
+    public function tags()
     {
-        return $this->hasMany(ProcessStep::class, 'command_id');
+        return $this->belongsToMany(Tag::class, 'commande_tag');
     }
-    public function argumentPositions()
+
+    /**
+     * The parametres that belong to the command.
+     */
+    public function parametres()
     {
-    return $this->hasMany(ArgumentPosition::class)->orderBy('position');
+        return $this->belongsToMany(Parametre::class, 'commande_parametre')
+                    ->withPivot('position')
+                    ->orderBy('pivot_position');
     }
 }

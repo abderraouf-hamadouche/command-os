@@ -1,6 +1,9 @@
 <?php
-
+use App\Http\Controllers\CommandController;
+use App\Http\Controllers\InterventionsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ParametreController;
+use App\Http\Controllers\EtapeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,32 +20,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-// The route we have created to show all blog posts.
-Route::get('/command', [\App\Http\Controllers\CommandController::class, 'index']);
-Route::get('/command/tag/{tag}', [\App\Http\Controllers\CommandController::class, 'tag']);
-Route::get('/command/{command}', [\App\Http\Controllers\CommandController::class, 'show']);
-Route::get('/command/{command}/edit', [\App\Http\Controllers\CommandController::class, 'edit']);
-Route::post('/command/{command}/edit', [\App\Http\Controllers\CommandController::class, 'update']);
+ 
 
 
-Route::get('/command/create/{command}', [\App\Http\Controllers\CommandController::class, 'create']);
-Route::post('/command/create/{command}',          [\App\Http\Controllers\CommandController::class, 'store']);
+// Command routes
+Route::resource('command', CommandController::class)
+    ->only(['index', 'show', 'create', 'store','edit','update']);
+Route::get('/search', [\App\Http\Controllers\CommandController::class, 'search'])->name('command.search');
+Route::post('/command/{command}/parametres', [\App\Http\Controllers\CommandController::class, 'addParametres']) ->name('command.addParametres');
 
-Route::get('search', [\App\Http\Controllers\CommandController::class, 'search']);
-Route::get('searchcommand', [\App\Http\Controllers\CommandController::class, 'searchcommand']);
-//Route::get('/live_search', 'LiveSearch@index');
-//Route::get('/live_search/action', 'LiveSearch@action')->name('live_search.action');
-
+//Routes for show delete editing a parameter with  parametre controller
+Route::get('command/{command}/parametre/{parametre}/edit', [ParametreController::class, 'edit'])    ->name('parametre.edit');
+Route::put('command/{command}/parametre/{parametre}', [ParametreController::class, 'update'])        ->name('parametre.update');
+Route::delete('command/{command}/parametre/{parametre}', [ParametreController::class, 'destroy'])    ->name('parametre.destroy');
 
 //route for intervention
-Route::get('/intervention', [\App\Http\Controllers\InterventionsController::class, 'index']);
-Route::get('/intervention/{intervention}', [\App\Http\Controllers\InterventionsController::class, 'show']);
-Route::get('/intervention/create/{intervention}', [\App\Http\Controllers\InterventionsController::class, 'create']);
-Route::post('/intervention/create/{intervention}', [\App\Http\Controllers\InterventionsController::class, 'store']);
+Route::resource('intervention', InterventionsController::class)
+    ->only(['index', 'show', 'create', 'store','edit','destroy']);
 
-Route::get('searchint', [\App\Http\Controllers\InterventionsController::class, 'search']);
-
-
-Route::get('searchparam', [\App\Http\Controllers\CommandController::class, 'searchparam']);
-
+//routes for Etape
+Route::put('/etape/graph', [EtapeController::class, 'updateGraph'])->name('etape.updateGraph'); // <-- New route to update the graph
+Route::post('/etape', [EtapeController::class, 'store'])->name('etape.store'); // <-- New route to add a step

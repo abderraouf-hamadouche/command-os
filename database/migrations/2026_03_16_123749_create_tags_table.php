@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterventionsTable extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateInterventionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('interventions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('intervention');
-            $table->text('description');
-            $table->text('tags');
-            $table->text('created_by');
+        Schema::create('tags', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom', 50)->unique();
             $table->timestamps();
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -31,6 +27,6 @@ class CreateInterventionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('interventions');
+        Schema::dropIfExists('tags');
     }
 }

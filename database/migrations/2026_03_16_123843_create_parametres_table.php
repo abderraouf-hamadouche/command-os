@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommandsTables extends Migration
+class CreateParametresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateCommandsTables extends Migration
      */
     public function up()
     {
-        Schema::create('commands_tables', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('command');
+        Schema::create('parametres', function (Blueprint $table) {
+            $table->id();
+            $table->string('nom', 150);
+            $table->enum('type', ['flag', 'option', 'arg']);
             $table->text('description');
-            $table->json('tags')->nullable();
-            $table->text('param');
-            $table->text('pdescription');
+            $table->string('argument', 150)->nullable();
+            $table->string('suffix', 150)->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateCommandsTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commands_tables');
+        Schema::dropIfExists('parametres');
     }
 }

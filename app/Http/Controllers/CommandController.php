@@ -2,226 +2,170 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Command;
-use App\Models\Param;
-
+use App\Models\Tag;
+use App\Models\Parametre;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommandController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        // show all blog posts
-        $commands = Command::all();
-        $distinctTags = Command::pluck('tags')->flatten(1)->unique()->values();
-
-        //$distinctTags = explode(' ', $distinctTags);
-
-        return view('command.index',[
-                'command' =>$commands, 'tags' => $distinctTags,
-        ]) ;
+        $commands = Command::with('tags')->latest()->paginate(10);
+        return view('command.index', compact('commands'));
     }
 
-    public function tag($tag)
-    {
-        // show all blog posts
-    // Rechercher les commandes qui contiennent le tag
-    $commands = Command::whereJsonContains('tags', $tag)->get();
-    $commands = $commands->unique('command');
-    // Retourner une vue avec les résultats
-    return view('command.byTag', compact('commands', 'tag'));
-    }
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        //show form to create a blog post
         return view('command.create');
     }
 
-   
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        //store a new post
-            // Check if a command with the same name and param already exists
-                $commandExist = Command::where('command', $request->command)->first();
-
-                if ($commandExist) {
-                    // Case 3: Check if both command and param exist
-                $paramExist = Command::where('command', $request->command)
-                                    ->where('param', $request->param)
-                                    ->first();
-
-                if ($paramExist) {
-                    // Redirect to the existing command if both command and param match
-                    return redirect('command/' . $paramExist->id);
-                } else {
-                    // Case 2: Create a new entry with existing command/description and new param/pdescription
-                    $newCommand = Command::create([
-                        'command' => $commandExist->command, // Prefilled command
-                        'description' => $commandExist->description, // Prefilled description
-                        'param' => $request->param, // User-provided param
-                        'pdescription' => $request->pdescription, // User-provided pdescription
-                    ]);
-
-                    return redirect('command/' . $newCommand->id);
-                }
-            } else {
-                // Case 1: Create a new row with user-provided data
-                $tagsArray = explode(' ', $request->tags);
-                $newCommand = Command::create([
-                    'command' => $request->command,
-                    'description' => $request->cdescription,
-                    //'tags' =>  json_encode($tagsArray),
-                    'tags' =>  $tagsArray,
-                    'param' => $request->param,
-                    'pdescription' => $request->pdescription,
-                ]);
-
-                return redirect('command/' . $newCommand->id);
-            }
-            }
-
-    public function show(Command $command)
-    {
-        //show a blog post
-        $command_array=command::where('command',$command->command)
-                                ->with('argumentPositions.argument')
-                                ->get();
-        //$command = Command::with('argumentPositions.argument')->find($id); // Trouve une commande spécifique
-
-        //$param=Param::where('id-command',$command->id)->get();
-        return view('command.show', [
-            'command' => $command_array,
+        $request->validate([
+            'name' => 'required|string|max:100|unique:commands,name',
+            'description' => 'required|string',
+            'tags' => 'nullable|string',
+            'parametres' => 'nullable|array',
+            'parametres.*.nom' => 'required_with:parametres|string|max:150',
+            'parametres.*.type' => 'required_with:parametres|in:flag,option,arg',
+            'parametres.*.description' => 'nullable|string',
+            'parametres.*.argument' => 'nullable|string|max:150',
+            'parametres.*.suffix' => 'nullable|string|max:150',
         ]);
-       // return $command;
+
+        return DB::transaction(function () use ($request) {
+            // 1. Create the Command
+            $command = Command::create([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+
+            // 2. Handle Tags
+            if ($request->filled('tags')) {
+                $tagNames = array_unique(array_filter(explode(' ', $request->tags)));
+                $tagIds = [];
+                foreach ($tagNames as $tagName) {
+                    $tag = Tag::firstOrCreate(['nom' => $tagName]);
+                    $tagIds[] = $tag->id;
+                }
+                $command->tags()->sync($tagIds);
+            }
+
+            // 3. Handle Parametres
+            if ($request->filled('parametres')) {
+                $position = 1;
+                foreach ($request->parametres as $paramData) {
+                    $param = Parametre::create([
+                        'nom' => $paramData['nom'],
+                        'type' => $paramData['type'],
+                        'description' => $paramData['description'] ?? '',
+                        'argument' => $paramData['argument'] ?? null,
+                        'suffix' => $paramData['suffix'] ?? null,
+                    ]);
+                    $command->parametres()->attach($param->id, ['position' => $position++]);
+                }
+            }
+
+            return redirect()->route('command.show', $command)->with('success', 'Command created successfully!');
+        });
     }
 
-    
+    /**
+     * Edit the form for creating a new resource.
+     */
     public function edit(Command $command)
     {
-        //show form to edit the post
+        return view('command.edit',compact('command'));
+    }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Command $command)
+    {
+        // Eager load the relationships
+        $command->load('tags', 'parametres');
+        return view('command.show', compact('command'));
+    }
 
-        return view('command.edit', [
-            'command' => $command,
+     /**
+     * Ajout D un  parametre a une command existante.
+     */
+     public function addParametres(Request $request, Command $command)
+    {
+        $request->validate([
+            'parametres' => 'required|array|min:1',
+            'parametres.*.nom' => 'required|string|max:150',
+            'parametres.*.type' => 'required|in:flag,option,arg',
+            'parametres.*.description' => 'nullable|string',
+            'parametres.*.argument' => 'nullable|string|max:150',
+            'parametres.*.suffix' => 'nullable|string|max:150',
         ]);
-    }
-
-    
-    public function update(Request $request, Command $command)
-    {
-        //save the edited post
-        try {
-            // Validate the request
-            /*$validator = Validator::make($request->all(), [
-                'cdescription' => 'required|string',
-                'tags' => 'required|string',
-                'param' => 'required|string',
-                'pdescription' => 'required|string',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()
-                               ->withErrors($validator)
-                               ->withInput();
+        return DB::transaction(function () use ($request, $command) {
+            // Find the highest current position for this command's parameters
+            $maxPosition = $command->parametres()->max('position') ?? 0;
+            foreach ($request->parametres as $paramData) {
+                $param = Parametre::create([
+                    'nom' => $paramData['nom'],
+                    'type' => $paramData['type'],
+                    'description' => $paramData['description'] ?? '',
+                    'argument' => $paramData['argument'] ?? null,
+                    'suffix' => $paramData['suffix'] ?? null,
+                ]);
+                $command->parametres()->attach($param->id, ['position' => ++$maxPosition]);
             }
-*/
-            // Convert tags string to array if needed
-            $tags = explode(' ', $request->tags);
-            $tags = array_filter($tags); // Remove empty values
-
-            // Update the command
-            $command->update([
-                'description' => $request->cdescription,
-                'tags' => $tags,
-                'param' => $request->param,
-                'pdescription' => $request->pdescription,
-            ]);
-
-            return redirect()->route('commands.index')
-                           ->with('success', 'Command updated successfully');
-
-        } catch (\Exception $e) {
-            return redirect()->back()
-                           ->with('error', 'Error updating command: ' . $e->getMessage())
-                           ->withInput();
-        }
+            return redirect()->route('command.show', $command)->with('success', 'New parameters added successfully!');
+        });
     }
 
-    
-    public function destroy(Command $command)
-    {
-        //delete a post
-    }
-	
+    /**
+     * Search for commands on the fly.
+     */
     public function search(Request $request)
     {
-        //store a new post
-        $output= '<tr><td>Command Name</td> <td>Command Description</td></tr>';
-        $commands=command::where('command','LIKE','%'.$request->search.'%')
-                        ->orwhere('description','LIKE','%'.$request->search.'%')
-                        ->get();
-        //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
-        $commands=$commands->unique('command');
-        foreach($commands as $commands)
-        {$output.=
-            '<tr>
-            <td><a href="command/'.$commands->id.'"> '.$commands->command.' </td> <td> '.$commands->description.' </td>
-             </tr>';
-
+        $query = $request->input('query');
+        if (!$query) {
+            return response()->json([]); // Return empty array if no query
         }
-        
-        return response($output);
+        $commands = Command::where('name', 'LIKE', "%{$query}%")
+                           ->orWhere('description', 'LIKE', "%{$query}%")
+                           ->limit(10)
+                           ->get();
+        return response()->json($commands);
     }
-    public function searchcommand(Request $request)
+
+
+        /**
+     * Parametre functions actions
+     */
+    public function editParametre(Command $command)
     {
-        //store a new post
-        $output= '';
-        $com=[];
-        $commands=command::select("id","command")->where('command','LIKE','%'.$request->get('query').'%')->get();
-        //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
-        $commands=$commands->unique('command');
-
-         foreach($commands as $commands)
-        {   
-            array_push($com,$commands->command);
-           
-        }
-        
-        return response($com);
+        // Eager load the relationships
+        $command->load('tags', 'parametres');
+        return view('command.show', compact('command'));
     }
-
-
-    public function searchparam(Request $request)
+    public function updateParametre(Command $command)
     {
-        //store a new post
-        $output= '<option value="description" >Merci de choisir quel parametre         .</option>';
-        $com=[];
-        $commands=command::where('command','LIKE','%'.$request->get('query').'%')->get();
-        //$lulu=$commands.id;
-        //return response($commands[0]->id);
-        $commands=$commands->unique('param');
-        //$params=param::select("param","id")
-        //->where('param','LIKE','%'.$request->get('query').'%')
-        //->where('id-command', $commands[0]->id)
-        //->get();
-        //$commands=Param::where('description','LIKE','%'.$request->search.'%')->get();
-
-
-        foreach($commands as $commands)
-        {$output.=
-            '  <option value="'.$commands->id.'">'.$commands->param.'</option>';
-
-        }
-         /*foreach($params as $params)
-        {   
-            array_push($com,$params->param);
-           
-        }*/
-        return response($output);
-       
+        // Eager load the relationships
+        $command->load('tags', 'parametres');
+        return view('command.show', compact('command'));
     }
- 
-	
-	
-	
+    public function destroyParametre(Command $command)
+    {
+        // Eager load the relationships
+        $command->load('tags', 'parametres');
+        return view('command.show', compact('command'));
+    }
+    
 }
