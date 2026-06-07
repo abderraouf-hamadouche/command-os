@@ -3,8 +3,8 @@
 @section('content')
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 mb-0">All Commands</h1>
-            <a href="{{ route('command.create') }}" class="btn btn-primary">+ Add New Command</a>
+            <h1 class="h3 mb-0">{{ __('All Commands') }}</h1>
+            <a href="{{ route('command.create') }}" class="btn btn-primary">{{ __('+ Add New Command') }}</a>
         </div>
 
         {{-- Session success message --}}
@@ -21,10 +21,10 @@
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Tags</th>
-                                <th scope="col" class="text-center">Actions</th>
+                                <th scope="col">{{ __('Name') }}</th>
+                                <th scope="col">{{ __('Description') }}</th>
+                                <th scope="col">{{ __('Tags') }}</th>
+                                <th scope="col" class="text-center">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,10 +38,10 @@
                                         @endforeach
                                     </td>
                                     <td class="d-flex gap-1">
-                                        <a href="{{ route('command.show', $command) }}" class="btn btn-sm btn-info ">View
-                                            Details</a>
-                                        <a href="{{ route('command.edit', $command) }}" class="btn btn-sm btn-warning me-1">Edit
-                                            Details</a>
+                                        <a href="{{ route('command.show', $command) }}"
+                                            class="btn btn-sm btn-info ">{{ __('View Details') }}</a>
+                                        <a href="{{ route('command.edit', $command) }}"
+                                            class="btn btn-sm btn-warning me-1">{{ __('Edit Details') }}</a>
                                     </td>
                                 </tr>
                             @empty

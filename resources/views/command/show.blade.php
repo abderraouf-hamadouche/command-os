@@ -7,7 +7,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h1 class="h4 mb-0">{{ $command->name }}</h1>
-                        <a href="{{ route('command.index') }}" class="btn btn-light btn-sm">&larr; Back to list</a>
+                        <a href="{{ route('command.index') }}" class="btn btn-light btn-sm">&larr; {{ __('Back to list') }}</a>
                     </div>
                     <div class="card-body">
                         <p class="lead">{{ $command->description }}</p>
@@ -16,7 +16,7 @@
 
                         {{-- TAGS --}}
                         <div class="mb-4">
-                            <h5 class="font-weight-bold">Tags</h5>
+                            <h5 class="font-weight-bold">{{ __('Tags') }}</h5>
                             @if($command->tags->isNotEmpty())
                                 <div>
                                     @foreach($command->tags as $tag)
@@ -24,7 +24,7 @@
                                     @endforeach
                                 </div>
                             @else
-                                <p class="text-muted">No tags associated.</p>
+                                <p class="text-muted">{{ __('No tags associated.') }}</p>
                             @endif
                         </div>
 
@@ -32,19 +32,19 @@
 
                         {{-- PARAMETRES --}}
                         <div>
-                            <h5 class="font-weight-bold">Parameters</h5>
+                            <h5 class="font-weight-bold">{{ __('Parameters') }}</h5>
                             @if($command->parametres->isNotEmpty())
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th>Position</th>
-                                                <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Description</th>
-                                                <th>Argument</th>
-                                                <th>Suffix</th>
-                                                <th>Actions</th>
+                                                <th>{{ __('Position') }}</th>
+                                                <th>{{ __('Name') }}</th>
+                                                <th>{{ __('Type') }}</th>
+                                                <th>{{ __('Description') }}</th>
+                                                <th>{{ __('Argument') }}</th>
+                                                <th>{{ __('Suffix') }}</th>
+                                                <th>{{ __('Actions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -62,17 +62,17 @@
                                                                 <button type="button" class="btn btn-info copy-btn text-white"
                                                                     data-cmd="{{ $command->name }}" data-param="{{ $param->nom }}"
                                                                     data-argument="{{ $param->argument }}"
-                                                                    data-suffix="{{ $param->suffix }}">Copy</button>
+                                                                    data-suffix="{{ $param->suffix }}">{{ __('Copy') }}</button>
                                                                 <a href="{{ route('parametre.edit', ['command' => $command->id, 'parametre' => $param->id]) }}"
-                                                                    class="btn btn-warning d-flex align-items-center">Edit</a>
+                                                                    class="btn btn-warning d-flex align-items-center">{{ __('Edit') }}</a>
                                                                 <form
                                                                     action="{{ route('parametre.destroy', ['command' => $command->id, 'parametre' => $param->id]) }}"
                                                                     method="POST"
-                                                                    onsubmit="return confirm('Are you sure you want to delete this parameter?');"
+                                                                    onsubmit="return confirm('{{ __('Are you sure you want to delete this parameter?') }}');"
                                                                     class="d-flex m-0 p-0">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger ">Delete</button>
+                                                                    <button type="submit" class="btn btn-danger ">{{ __('Delete') }}</button>
                                                                 </form>
                                                             </div>
                                                     </td>
@@ -83,30 +83,29 @@
                                     </table>
                                 </div>
                             @else
-                                <p class="text-muted">No parameters associated.</p>
+                                <p class="text-muted">{{ __('No parameters associated.') }}</p>
                             @endif
                         </div>
 
                         <hr class="my-4">
                         {{-- ADD NEW PARAMETERS FORM --}}
                         <div class="mt-4">
-                            <h5 class="font-weight-bold">Add New Parameters</h5>
+                            <h5 class="font-weight-bold">{{ __('Add New Parameters') }}</h5>
 
                             <form action="{{ route('command.addParametres', $command) }}" method="POST">
                                 @csrf
                                 <fieldset>
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <legend class="h6 m-0 text-muted">Dynamically add new parameters to this command.
+                                        <legend class="h6 m-0 text-muted">{{ __('Dynamically add new parameters to this command.') }}
                                         </legend>
-                                        <button type="button" id="add-parameter-btn" class="btn btn-sm btn-success">+ Add
-                                            Parameter</button>
+                                        <button type="button" id="add-parameter-btn" class="btn btn-sm btn-success">{{ __('+ Add Parameter') }}</button>
                                     </div>
                                     <div id="parameters-container">
                                         {{-- Dynamic parameter rows will be inserted here --}}
                                     </div>
                                 </fieldset>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Save New Parameters</button>
+                                    <button type="submit" class="btn btn-primary">{{ __('Save New Parameters') }}</button>
                                 </div>
                             </form>
                         </div>
@@ -129,25 +128,25 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Parameter Name</label>
+                    <label class="form-label">{{ __('Parameter Name') }}</label>
                     <input type="text" class="form-control" name="parametres[__INDEX__][nom]">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Type</label>
+                    <label class="form-label">{{ __('Type') }}</label>
                     <select class="form-select" name="parametres[__INDEX__][type]">
-                        <option value="flag">Flag</option>
-                        <option value="option">Option</option>
-                        <option value="arg">Argument</option>
+                        <option value="flag">{{ __('Flag') }}</option>
+                        <option value="option">{{ __('Option') }}</option>
+                        <option value="arg">{{ __('Argument') }}</option>
                     </select>
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label">Description</label>
+                <label class="form-label">{{ __('Description') }}</label>
                 <input type="text" class="form-control" name="parametres[__INDEX__][description]">
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Argument</label>
+                    <label class="form-label">{{ __('Argument') }}</label>
                     <div class="d-flex gap-2">
                         <input type="text" class="form-control" name="parametres[__INDEX__][argument]"
                             placeholder="ex: <container_name>">
@@ -159,7 +158,7 @@
                         variable" pour le wrapper en &lt;&gt;, ou clique sans sélection pour insérer &lt;variable&gt;</div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Suffix</label>
+                    <label class="form-label">{{ __('Suffix') }}</label>
                     <div class="d-flex gap-2">
                         <input type="text" class="form-control" name="parametres[__INDEX__][suffix]"
                             placeholder="ex: --timestamps ou -C <pathtofile>">
@@ -179,7 +178,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="copyModalLabel">Copier la commande</h5>
+                    <h5 class="modal-title" id="copyModalLabel">{{ __('Copier la commande') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -187,13 +186,13 @@
                         <!-- Generate dynamically -->
                     </div>
                     <div class="mt-3">
-                        <strong>Aperçu de la commande (modifiable) :</strong>
+                        <strong>{{ __('Aperçu de la commande (modifiable) :') }}</strong>
                         <textarea id="commandPreview" class="form-control mt-2 font-monospace" rows="2"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" id="confirmCopyBtn">Copier dans le presse-papier</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
+                    <button type="button" class="btn btn-primary" id="confirmCopyBtn">{{ __('Copier dans le presse-papier') }}</button>
                 </div>
             </div>
         </div>
