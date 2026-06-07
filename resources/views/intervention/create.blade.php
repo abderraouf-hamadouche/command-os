@@ -6,10 +6,10 @@
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-header">
-                    <h1 class="h4 mb-0">Create New Intervention</h1>
+                    <h1 class="h4 mb-0">{{ __('Create New Intervention') }}</h1>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Fill out the form below to define a new intervention procedure. You will add the specific steps in the next screen.</p>
+                    <p class="card-text">{{ __('Fill out the form below to define a new intervention procedure. You will add the specific steps in the next screen.') }}</p>
                     <hr>
 
                     {{-- This form will post to the 'intervention.store' route --}}
@@ -17,7 +17,7 @@
                         @csrf
 
                         <div class="mb-3">
-                            <label for="titre" class="form-label">Title</label>
+                            <label for="titre" class="form-label">{{ __('Title') }}</label>
                             <input type="text"
                                    class="form-control @error('titre') is-invalid @enderror"
                                    id="titre"
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="probleme" class="form-label">Problem Statement</label>
+                            <label for="probleme" class="form-label">{{ __('Problem Statement') }}</label>
                             <input type="text"
                                    class="form-control @error('probleme') is-invalid @enderror"
                                    id="probleme"
@@ -45,7 +45,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="description" class="form-label">Detailed Description</label>
+                            <label for="description" class="form-label">{{ __('Detailed Description') }}</label>
                             <textarea class="form-control @error('description') is-invalid @enderror"
                                       id="description"
                                       name="description"
@@ -59,8 +59,8 @@
                         <hr>
 
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('intervention.index') }}" class="btn btn-outline-secondary me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Save and Build Steps &rarr;</button>
+                            <a href="{{ route('intervention.index') }}" class="btn btn-outline-secondary me-2">{{ __('Cancel') }}</a>
+                            <button type="submit" class="btn btn-primary">{{ __('Save and Build Steps') }} &rarr;</button>
                         </div>
                     </form>
                 </div>
