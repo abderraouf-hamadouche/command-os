@@ -183,3 +183,7 @@ Une étape est **conditionnelle** si `next_step_ko` est renseigné. Une étape e
 ## Licence
 
 Projet personnel — tous droits réservés.
+=======
+# command-os
+A centralized command management web application for IT Infrastructure and DevOps teams.
+b3d2c96
