@@ -88,6 +88,7 @@ DB_PORT=3306
 DB_DATABASE=command_os
 DB_USERNAME=root
 DB_PASSWORD=
+APP_LOCALE=    fr || en         #langage   
 ```
 
 **4. Créer la base de données et exécuter les migrations**
