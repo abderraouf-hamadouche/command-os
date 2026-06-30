@@ -86,7 +86,7 @@ class CommandController extends Controller
      */
     public function edit(Command $command)
     {
-        return view('command.edit',compact('command'));
+        return view('command.edit', compact('command'));
     }
 
     /**
@@ -99,10 +99,10 @@ class CommandController extends Controller
         return view('command.show', compact('command'));
     }
 
-     /**
+    /**
      * Ajout D un  parametre a une command existante.
      */
-     public function addParametres(Request $request, Command $command)
+    public function addParametres(Request $request, Command $command)
     {
         $request->validate([
             'parametres' => 'required|array|min:1',
@@ -139,33 +139,16 @@ class CommandController extends Controller
             return response()->json([]); // Return empty array if no query
         }
         $commands = Command::where('name', 'LIKE', "%{$query}%")
-                           ->orWhere('description', 'LIKE', "%{$query}%")
-                           ->limit(10)
-                           ->get();
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->limit(10)
+            ->get();
         return response()->json($commands);
     }
 
 
-        /**
+    /**
      * Parametre functions actions
      */
-    public function editParametre(Command $command)
-    {
-        // Eager load the relationships
-        $command->load('tags', 'parametres');
-        return view('command.show', compact('command'));
-    }
-    public function updateParametre(Command $command)
-    {
-        // Eager load the relationships
-        $command->load('tags', 'parametres');
-        return view('command.show', compact('command'));
-    }
-    public function destroyParametre(Command $command)
-    {
-        // Eager load the relationships
-        $command->load('tags', 'parametres');
-        return view('command.show', compact('command'));
-    }
-    
+
+
 }
